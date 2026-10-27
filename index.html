@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JETZACUBE - Wireframes interactivos</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #eeeeee;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100dvh;
+}
+
+.contenedor {
+  width: 100%;
+  max-width: 430px;
+  text-align: center;
+  padding: 12px;
+}
+
+h3 {
+  margin: 8px 0;
+  font-size: 15px;
+}
+
+.pantalla {
+  position: relative;
+  width: 100%;
+  background: white;
+}
+
+.pantalla img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.boton {
+  position: absolute;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  z-index: 5;
+}
+
+.boton:focus-visible {
+  outline: 3px solid #2682ae;
+}
+
+.controles {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.controles button {
+  flex: 1;
+  padding: 12px 6px;
+  background: white;
+  border: 1px solid #555;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.controles button:disabled {
+  opacity: 0.35;
+}
+
+#contador {
+  font-size: 12px;
+  color: #555;
+}
+
+@media (max-width: 480px) {
+  .contenedor {
+    padding: 5px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+  <h3 id="titulo">INICIO</h3>
+
+  <div class="pantalla" id="pantalla">
+    <img id="imagen" src="pantallas/01.png" alt="Wireframe">
+    <div id="botones"></div>
+  </div>
+
+  <p id="contador">Pantalla 1 de 18</p>
+
+  <div class="controles">
+    <button id="anterior" onclick="anterior()">Anterior</button>
+    <button onclick="irA(1)">Inicio</button>
+    <button id="siguiente" onclick="siguiente()">Siguiente</button>
+  </div>
+
+</div>
+
+<script>
+
+// NÚMERO DE PANTALLA ACTUAL
+let actual = 1;
+
+// NOMBRES DE LAS 18 PANTALLAS
+const nombres = [
+  "INICIO",
+  "CREAR CUENTA TUTOR",
+  "ACEPTAR TÉRMINOS DE PRIVACIDAD",
+  "INICIAR SESIÓN",
+  "RECUPERAR CONTRASEÑA",
+  "VALIDACIÓN DE CÓDIGO",
+  "NUEVA CONTRASEÑA",
+  "INICIAR SESIÓN",
+  "PERFIL TUTOR",
+  "PERFIL NIÑO",
+  "SINCRONIZACIÓN",
+  "CONEXIÓN DE DISPOSITIVOS",
+  "INICIO APLICACIÓN",
+  "GENERAR REPORTE",
+  "INFORME DEL PROGRESO",
+  "DESCARGA PDF",
+  "HISTORIAL",
+  "AJUSTES"
+];
+
+// COORDENADAS DE BOTONES INTERACTIVOS
+// Valores en porcentajes:
+// x = izquierda, y = arriba, w = ancho, h = alto
+// destino = pantalla a la que navegará
+
+const botonesPorPantalla = {
+
+  // 1. INICIO
+  1: [
+    {x: 14, y: 87, w: 72, h: 5, destino: 2, texto: "Crear cuenta"},
+    {x: 36, y: 96, w: 30, h: 4, destino: 4, texto: "Iniciar sesión"}
+  ],
+
+  // 2. CREAR CUENTA
+  2: [
+    {x: 15, y: 74, w: 70, h: 9, destino: 3, texto: "Aceptar términos"},
+    {x: 22, y: 85, w: 56, h: 8, destino: 3, texto: "Continuar"}
+  ],
+
+  // 3. PRIVACIDAD
+  3: [
+    {x: 18, y: 75, w: 65, h: 9, destino: 4, texto: "Aceptar privacidad"},
+    {x: 22, y: 85, w: 56, h: 8, destino: 4, texto: "Continuar"}
+  ],
+
+  // 4. INICIAR SESIÓN
+  4: [
+    {x: 35, y: 64, w: 60, h: 8, destino: 5, texto: "Olvidé mi contraseña"},
+    {x: 18, y: 78, w: 65, h: 9, destino: 9, texto: "Iniciar sesión"}
+  ],
+
+  // 5. RECUPERAR CONTRASEÑA
+  5: [
+    {x: 18, y: 76, w: 65, h: 10, destino: 6, texto: "Enviar código"}
+  ],
+
+  // 6. VALIDACIÓN DE CÓDIGO
+  6: [
+    {x: 18, y: 76, w: 65, h: 10, destino: 7, texto: "Validar código"}
+  ],
+
+  // 7. NUEVA CONTRASEÑA
+  7: [
+    {x: 18, y: 76, w: 65, h: 10, destino: 8, texto: "Guardar contraseña"}
+  ],
+
+  // 8. INICIO DE SESIÓN
+  8: [
+    {x: 18, y: 76, w: 65, h: 10, destino: 9, texto: "Entrar"}
+  ],
+
+  // 9. PERFIL TUTOR
+  9: [
+    {x: 18, y: 76, w: 65, h: 10, destino: 10, texto: "Guardar perfil"}
+  ],
+
+  // 10. PERFIL NIÑO
+  10: [
+    {x: 18, y: 76, w: 65, h: 10, destino: 11, texto: "Continuar"}
+  ],
+
+  // 11. SINCRONIZACIÓN
+  11: [
+    {x: 18, y: 76, w: 65, h: 10, destino: 12, texto: "Sincronizar"}
+  ],
+
+  // 12. CONEXIÓN DE DISPOSITIVOS
+  12: [
+    {x: 12, y: 74, w: 35, h: 10, destino: 11, texto: "Regresar"},
+    {x: 53, y: 74, w: 35, h: 10, destino: 13, texto: "Conectar"}
+  ],
+
+  // 13. PANTALLA PRINCIPAL
+  13: [
+    {x: 17, y: 53, w: 20, h: 12, destino: 14, texto: "Reportes"},
+    {x: 40, y: 53, w: 20, h: 12, destino: 17, texto: "Historial"},
+    {x: 63, y: 53, w: 20, h: 12, destino: 18, texto: "Ajustes"},
+    {x: 17, y: 67, w: 20, h: 12, destino: 14, texto: "Generar reporte"},
+    {x: 40, y: 67, w: 20, h: 12, destino: 17, texto: "Ver actividad"},
+    {x: 63, y: 67, w: 20, h: 12, destino: 18, texto: "Configuración"}
+  ],
+
+  // 14. GENERAR REPORTE
+  14: [
+    {x: 18, y: 76, w: 65, h: 10, destino: 15, texto: "Generar reporte"}
+  ],
+
+  // 15. INFORME DEL PROGRESO
+  15: [
+    {x: 18, y: 76, w: 65, h: 10, destino: 16, texto: "Descargar PDF"}
+  ],
+
+  // 16. DESCARGA PDF
+  16: [
+    {x: 18, y: 76, w: 65, h: 10, destino: 13, texto: "Continuar"}
+  ],
+
+  // 17. HISTORIAL
+  17: [
+    {x: 18, y: 76, w: 65, h: 10, destino: 13, texto: "Continuar"}
+  ],
+
+  // 18. AJUSTES
+  18: [
+    {x: 18, y: 76, w: 65, h: 10, destino: 13, texto: "Guardar y continuar"}
+  ]
+
+};
+
+// FUNCIÓN PARA CAMBIAR DE PANTALLA
+function irA(numero) {
+  if (numero < 1 || numero > 18) return;
+
+  actual = numero;
+
+  const archivo = String(numero).padStart(2, "0");
+
+  document.getElementById("imagen").src =
+    "pantallas/" + archivo + ".png";
+
+  document.getElementById("titulo").textContent =
+    nombres[numero - 1];
+
+  document.getElementById("contador").textContent =
+    "Pantalla " + numero + " de 18";
+
+  document.getElementById("anterior").disabled =
+    numero === 1;
+
+  document.getElementById("siguiente").disabled =
+    numero === 18;
+
+  crearBotones();
+
+  window.scrollTo(0, 0);
+}
+
+// CREAR ZONAS INTERACTIVAS SOBRE LA IMAGEN
+function crearBotones() {
+
+  const contenedor = document.getElementById("botones");
+
+  contenedor.innerHTML = "";
+
+  const botones = botonesPorPantalla[actual] || [];
+
+  botones.forEach(function(datos) {
+
+    const boton = document.createElement("button");
+
+    boton.className = "boton";
+    boton.type = "button";
+
+    boton.style.left = datos.x + "%";
+    boton.style.top = datos.y + "%";
+    boton.style.width = datos.w + "%";
+    boton.style.height = datos.h + "%";
+
+    boton.setAttribute("aria-label", datos.texto);
+    boton.title = datos.texto;
+
+    boton.onclick = function() {
+      irA(datos.destino);
+    };
+
+    contenedor.appendChild(boton);
+
+  });
+
+}
+
+// VOLVER A LA PANTALLA ANTERIOR
+function anterior() {
+  irA(actual - 1);
+}
+
+// IR A LA PANTALLA SIGUIENTE
+function siguiente() {
+  irA(actual + 1);
+}
+
+// NAVEGACIÓN CON TECLADO
+document.addEventListener("keydown", function(evento) {
+
+  if (evento.key === "ArrowRight") {
+    siguiente();
+  }
+
+  if (evento.key === "ArrowLeft") {
+    anterior();
+  }
+
+});
+
+// INICIAR PROTOTIPO
+irA(1);
+
+</script>
+
+</body>
+</html>

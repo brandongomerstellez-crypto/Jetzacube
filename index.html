@@ -2,8 +2,12 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+  />
   <title>JETZACUBE Wireframes</title>
+
   <style>
     * {
       box-sizing: border-box;
@@ -27,58 +31,52 @@
     }
 
     .app {
-      position: relative;
       width: 100vw;
-      height: 100vh;
+      height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: center;
       overflow: hidden;
+      background: #e9e9e9;
     }
 
-    .phone-wrapper {
+    /* ESTE MARCO SE AJUSTA EXACTAMENTE AL TAMAÑO REAL DE LA IMAGEN */
+    #frame {
       position: relative;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      display: inline-block;
+      width: auto;
+      height: 100dvh;
+      max-width: 100vw;
+      line-height: 0;
     }
 
-    .pantalla {
-      position: relative;
-      width: auto;
-      height: 100vh;
-      max-width: 100vw;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .pantalla img {
-      height: 100vh;
-      width: auto;
-      max-width: 100vw;
-      object-fit: contain;
+    #frame img {
       display: block;
+      height: 100dvh;
+      width: auto;
+      max-width: 100vw;
+      max-height: 100dvh;
       user-select: none;
+      -webkit-user-drag: none;
       pointer-events: none;
     }
 
-    .overlay {
+    /* CAPA ENCIMA DE LA IMAGEN, CON EL MISMO TAMAÑO EXACTO */
+    #overlay {
       position: absolute;
       inset: 0;
-      z-index: 10;
+      z-index: 15;
     }
 
     .hotspot {
       position: absolute;
-      background: transparent;
       border: none;
-      padding: 0;
+      background: transparent;
       margin: 0;
+      padding: 0;
       cursor: pointer;
       z-index: 20;
+      touch-action: manipulation;
     }
 
     .hotspot:focus {
@@ -87,32 +85,32 @@
 
     .titulo-interno {
       position: absolute;
-      top: 12%;
+      top: 7.5%;
       left: 50%;
       transform: translateX(-50%);
       z-index: 30;
-      background: rgba(255,255,255,0.88);
+      background: rgba(255, 255, 255, 0.92);
       color: #111;
-      padding: 10px 18px;
-      border-radius: 18px;
-      font-size: 17px;
+      padding: 10px 16px;
+      border-radius: 16px;
+      font-size: 16px;
       font-weight: 700;
       text-align: center;
-      max-width: 78%;
+      max-width: 74%;
       line-height: 1.2;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
     .btn-back {
       position: absolute;
-      top: 12%;
-      left: 8%;
+      top: 7.3%;
+      left: 5%;
       z-index: 35;
       width: 42px;
       height: 42px;
       border: none;
       border-radius: 50%;
-      background: rgba(255,255,255,0.92);
+      background: rgba(255, 255, 255, 0.94);
       color: #111;
       font-size: 22px;
       font-weight: bold;
@@ -121,6 +119,7 @@
       justify-content: center;
       box-shadow: 0 2px 8px rgba(0,0,0,0.12);
       cursor: pointer;
+      touch-action: manipulation;
     }
 
     .btn-back.oculto {
@@ -129,15 +128,15 @@
 
     @media (max-width: 480px) {
       .titulo-interno {
-        top: 11%;
-        font-size: 15px;
+        top: 7%;
+        font-size: 14px;
         padding: 9px 14px;
-        max-width: 74%;
+        max-width: 76%;
       }
 
       .btn-back {
-        top: 11%;
-        left: 7%;
+        top: 6.8%;
+        left: 4.8%;
         width: 38px;
         height: 38px;
         font-size: 20px;
@@ -147,14 +146,12 @@
 </head>
 <body>
   <div class="app">
-    <div class="phone-wrapper">
-      <div class="pantalla" id="pantalla">
-        <img id="imagen" src="pantallas/01.png" alt="Pantalla wireframe" />
-        <div class="overlay" id="overlay"></div>
+    <div id="frame">
+      <img id="imagen" src="pantallas/01.png" alt="Pantalla wireframe" />
+      <div id="overlay"></div>
 
-        <button id="btnBack" class="btn-back oculto" onclick="retroceder()">←</button>
-        <div id="tituloInterno" class="titulo-interno">INICIO</div>
-      </div>
+      <button id="btnBack" class="btn-back oculto" onclick="retroceder()">←</button>
+      <div id="tituloInterno" class="titulo-interno">INICIO</div>
     </div>
   </div>
 
@@ -183,98 +180,104 @@
       18: "AJUSTES"
     };
 
-    /* 
-      Coordenadas en porcentaje relativas a la imagen completa:
-      x = left
-      y = top
-      w = width
-      h = height
+    /*
+      Coordenadas en % sobre LA IMAGEN.
+      x = izquierda
+      y = arriba
+      w = ancho
+      h = alto
     */
+
     const mapa = {
       1: [
-        { x: 15, y: 58, w: 70, h: 8, destino: 2 },
-        { x: 33, y: 69, w: 34, h: 6, destino: 4 }
+        { x: 21, y: 49.5, w: 58, h: 6.2, destino: 2, label: "Crear cuenta" },
+        { x: 39, y: 60.2, w: 22, h: 4.2, destino: 4, label: "Iniciar sesión" }
       ],
 
       2: [
-        { x: 20, y: 76, w: 60, h: 5, destino: 3 },
-        { x: 18, y: 86, w: 64, h: 9, destino: 3 }
+        { x: 24, y: 76.3, w: 52, h: 4.2, destino: 3, label: "Aceptar términos" },
+        { x: 20, y: 86.8, w: 60, h: 8.4, destino: 3, label: "Continuar" }
       ],
 
       3: [
-        { x: 18, y: 85, w: 64, h: 9, destino: 4 }
+        { x: 20, y: 85.7, w: 60, h: 8.5, destino: 4, label: "Aceptar privacidad" }
       ],
 
       4: [
-        { x: 30, y: 61, w: 40, h: 4, destino: 5 },
-        { x: 18, y: 79, w: 64, h: 9, destino: 9 }
+        { x: 35, y: 60.8, w: 31, h: 3.7, destino: 5, label: "Olvidé mi contraseña" },
+        { x: 20, y: 78.6, w: 60, h: 8.6, destino: 9, label: "Iniciar sesión" }
       ],
 
       5: [
-        { x: 18, y: 79, w: 64, h: 9, destino: 6 }
+        { x: 20, y: 78.8, w: 60, h: 8.6, destino: 6, label: "Enviar código" }
       ],
 
       6: [
-        { x: 18, y: 79, w: 64, h: 9, destino: 7 }
+        { x: 20, y: 79.2, w: 60, h: 8.6, destino: 7, label: "Validar código" }
       ],
 
       7: [
-        { x: 18, y: 79, w: 64, h: 9, destino: 8 }
+        { x: 20, y: 78.8, w: 60, h: 8.6, destino: 8, label: "Guardar contraseña" }
       ],
 
       8: [
-        { x: 18, y: 79, w: 64, h: 9, destino: 9 }
+        { x: 20, y: 78.4, w: 60, h: 8.6, destino: 9, label: "Entrar" }
       ],
 
       9: [
-        { x: 18, y: 79, w: 64, h: 9, destino: 10 }
+        { x: 20, y: 78.3, w: 60, h: 8.7, destino: 10, label: "Guardar perfil tutor" }
       ],
 
       10: [
-        { x: 18, y: 79, w: 64, h: 9, destino: 11 }
+        { x: 20, y: 78.3, w: 60, h: 8.7, destino: 11, label: "Guardar perfil niño" }
       ],
 
       11: [
-        { x: 18, y: 79, w: 64, h: 9, destino: 12 }
+        { x: 24, y: 75.8, w: 52, h: 7.2, destino: 12, label: "Sincronizar" }
       ],
 
       12: [
-        { x: 14, y: 78, w: 30, h: 8, destino: 11 },
-        { x: 56, y: 78, w: 30, h: 8, destino: 13 }
+        { x: 17, y: 74.8, w: 22, h: 7.5, destino: 11, label: "Regresar" },
+        { x: 61, y: 74.8, w: 22, h: 7.5, destino: 13, label: "Conectar" }
       ],
 
       13: [
-        { x: 21, y: 56, w: 14, h: 9, destino: 14 },
-        { x: 42, y: 56, w: 14, h: 9, destino: 17 },
-        { x: 63, y: 56, w: 14, h: 9, destino: 18 },
+        { x: 25, y: 55.8, w: 11.5, h: 8.3, destino: 14, label: "Reporte 1" },
+        { x: 41.8, y: 55.8, w: 11.5, h: 8.3, destino: 17, label: "Historial 1" },
+        { x: 58.8, y: 55.8, w: 11.5, h: 8.3, destino: 18, label: "Ajustes 1" },
 
-        { x: 21, y: 67, w: 14, h: 9, destino: 14 },
-        { x: 42, y: 67, w: 14, h: 9, destino: 17 },
-        { x: 63, y: 67, w: 14, h: 9, destino: 18 },
+        { x: 25, y: 66.8, w: 11.5, h: 8.3, destino: 14, label: "Reporte 2" },
+        { x: 41.8, y: 66.8, w: 11.5, h: 8.3, destino: 17, label: "Historial 2" },
+        { x: 58.8, y: 66.8, w: 11.5, h: 8.3, destino: 18, label: "Ajustes 2" },
 
-        { x: 18, y: 82, w: 64, h: 8, destino: 14 }
+        { x: 23.5, y: 81.2, w: 53, h: 7.2, destino: 14, label: "Continuar principal" }
       ],
 
       14: [
-        { x: 18, y: 79, w: 64, h: 9, destino: 15 }
+        { x: 20, y: 79.5, w: 60, h: 8.5, destino: 15, label: "Generar reporte" }
       ],
 
       15: [
-        { x: 18, y: 79, w: 64, h: 9, destino: 16 }
+        { x: 20, y: 79.3, w: 60, h: 8.5, destino: 16, label: "Ir a descargar PDF" }
       ],
 
       16: [
-        { x: 18, y: 79, w: 64, h: 9, destino: 13 }
+        { x: 20, y: 78.8, w: 60, h: 8.5, destino: 13, label: "Continuar" }
       ],
 
       17: [
-        { x: 18, y: 79, w: 64, h: 9, destino: 13 }
+        { x: 20, y: 78.8, w: 60, h: 8.5, destino: 13, label: "Volver al inicio app" }
       ],
 
       18: [
-        { x: 18, y: 79, w: 64, h: 9, destino: 13 }
+        { x: 20, y: 78.8, w: 60, h: 8.5, destino: 13, label: "Guardar ajustes" }
       ]
     };
+
+    const imagen = document.getElementById("imagen");
+    const overlay = document.getElementById("overlay");
+    const titulo = document.getElementById("tituloInterno");
+    const btnBack = document.getElementById("btnBack");
 
     function irA(numero, guardarHistorial = true) {
       if (numero < 1 || numero > 18) return;
@@ -284,44 +287,64 @@
       }
 
       actual = numero;
+      titulo.textContent = nombres[numero];
 
       const archivo = String(numero).padStart(2, "0");
-      document.getElementById("imagen").src = "pantallas/" + archivo + ".png";
-      document.getElementById("tituloInterno").textContent = nombres[numero];
+      imagen.src = "pantallas/" + archivo + ".png";
 
-      const btnBack = document.getElementById("btnBack");
       if (historial.length > 0) {
         btnBack.classList.remove("oculto");
       } else {
         btnBack.classList.add("oculto");
       }
-
-      crearHotspots();
     }
 
     function retroceder() {
       if (historial.length === 0) return;
       const anterior = historial.pop();
-      irA(anterior, false);
+      actual = anterior;
+      titulo.textContent = nombres[anterior];
+      const archivo = String(anterior).padStart(2, "0");
+      imagen.src = "pantallas/" + archivo + ".png";
+
+      if (historial.length > 0) {
+        btnBack.classList.remove("oculto");
+      } else {
+        btnBack.classList.add("oculto");
+      }
     }
 
     function crearHotspots() {
-      const overlay = document.getElementById("overlay");
       overlay.innerHTML = "";
+      const zonas = mapa[actual] || [];
 
-      const botones = mapa[actual] || [];
+      zonas.forEach(zona => {
+        const btn = document.createElement("button");
+        btn.className = "hotspot";
+        btn.type = "button";
+        btn.setAttribute("aria-label", zona.label || "botón");
+        btn.title = zona.label || "";
 
-      botones.forEach((zona) => {
-        const b = document.createElement("button");
-        b.className = "hotspot";
-        b.style.left = zona.x + "%";
-        b.style.top = zona.y + "%";
-        b.style.width = zona.w + "%";
-        b.style.height = zona.h + "%";
-        b.onclick = () => irA(zona.destino, true);
-        overlay.appendChild(b);
+        btn.style.left = zona.x + "%";
+        btn.style.top = zona.y + "%";
+        btn.style.width = zona.w + "%";
+        btn.style.height = zona.h + "%";
+
+        btn.addEventListener("click", () => {
+          irA(zona.destino, true);
+        });
+
+        overlay.appendChild(btn);
       });
     }
+
+    imagen.addEventListener("load", () => {
+      crearHotspots();
+    });
+
+    window.addEventListener("resize", () => {
+      crearHotspots();
+    });
 
     irA(1, false);
   </script>

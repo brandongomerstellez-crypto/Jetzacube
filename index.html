@@ -1,343 +1,329 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JETZACUBE - Wireframes interactivos</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>JETZACUBE Wireframes</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-<style>
-* {
-  box-sizing: border-box;
-}
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #e9e9e9;
+      font-family: Arial, sans-serif;
+    }
 
-body {
-  margin: 0;
-  background: #eeeeee;
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100dvh;
-}
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-.contenedor {
-  width: 100%;
-  max-width: 430px;
-  text-align: center;
-  padding: 12px;
-}
+    .app {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
 
-h3 {
-  margin: 8px 0;
-  font-size: 15px;
-}
+    .phone-wrapper {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-.pantalla {
-  position: relative;
-  width: 100%;
-  background: white;
-}
+    .pantalla {
+      position: relative;
+      width: auto;
+      height: 100vh;
+      max-width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-.pantalla img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
+    .pantalla img {
+      height: 100vh;
+      width: auto;
+      max-width: 100vw;
+      object-fit: contain;
+      display: block;
+      user-select: none;
+      pointer-events: none;
+    }
 
-.boton {
-  position: absolute;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  touch-action: manipulation;
-  z-index: 5;
-}
+    .overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+    }
 
-.boton:focus-visible {
-  outline: 3px solid #2682ae;
-}
+    .hotspot {
+      position: absolute;
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      z-index: 20;
+    }
 
-.controles {
-  display: flex;
-  justify-content: space-between;
-  gap: 6px;
-  margin-top: 12px;
-}
+    .hotspot:focus {
+      outline: none;
+    }
 
-.controles button {
-  flex: 1;
-  padding: 12px 6px;
-  background: white;
-  border: 1px solid #555;
-  border-radius: 8px;
-  font-size: 13px;
-  cursor: pointer;
-}
+    .titulo-interno {
+      position: absolute;
+      top: 12%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 30;
+      background: rgba(255,255,255,0.88);
+      color: #111;
+      padding: 10px 18px;
+      border-radius: 18px;
+      font-size: 17px;
+      font-weight: 700;
+      text-align: center;
+      max-width: 78%;
+      line-height: 1.2;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
 
-.controles button:disabled {
-  opacity: 0.35;
-}
+    .btn-back {
+      position: absolute;
+      top: 12%;
+      left: 8%;
+      z-index: 35;
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.92);
+      color: #111;
+      font-size: 22px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      cursor: pointer;
+    }
 
-#contador {
-  font-size: 12px;
-  color: #555;
-}
+    .btn-back.oculto {
+      display: none;
+    }
 
-@media (max-width: 480px) {
-  .contenedor {
-    padding: 5px;
-  }
-}
-</style>
+    @media (max-width: 480px) {
+      .titulo-interno {
+        top: 11%;
+        font-size: 15px;
+        padding: 9px 14px;
+        max-width: 74%;
+      }
+
+      .btn-back {
+        top: 11%;
+        left: 7%;
+        width: 38px;
+        height: 38px;
+        font-size: 20px;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="app">
+    <div class="phone-wrapper">
+      <div class="pantalla" id="pantalla">
+        <img id="imagen" src="pantallas/01.png" alt="Pantalla wireframe" />
+        <div class="overlay" id="overlay"></div>
 
-<div class="contenedor">
-
-  <h3 id="titulo">INICIO</h3>
-
-  <div class="pantalla" id="pantalla">
-    <img id="imagen" src="pantallas/01.png" alt="Wireframe">
-    <div id="botones"></div>
+        <button id="btnBack" class="btn-back oculto" onclick="retroceder()">←</button>
+        <div id="tituloInterno" class="titulo-interno">INICIO</div>
+      </div>
+    </div>
   </div>
 
-  <p id="contador">Pantalla 1 de 18</p>
+  <script>
+    let actual = 1;
+    const historial = [];
 
-  <div class="controles">
-    <button id="anterior" onclick="anterior()">Anterior</button>
-    <button onclick="irA(1)">Inicio</button>
-    <button id="siguiente" onclick="siguiente()">Siguiente</button>
-  </div>
-
-</div>
-
-<script>
-
-// NÚMERO DE PANTALLA ACTUAL
-let actual = 1;
-
-// NOMBRES DE LAS 18 PANTALLAS
-const nombres = [
-  "INICIO",
-  "CREAR CUENTA TUTOR",
-  "ACEPTAR TÉRMINOS DE PRIVACIDAD",
-  "INICIAR SESIÓN",
-  "RECUPERAR CONTRASEÑA",
-  "VALIDACIÓN DE CÓDIGO",
-  "NUEVA CONTRASEÑA",
-  "INICIAR SESIÓN",
-  "PERFIL TUTOR",
-  "PERFIL NIÑO",
-  "SINCRONIZACIÓN",
-  "CONEXIÓN DE DISPOSITIVOS",
-  "INICIO APLICACIÓN",
-  "GENERAR REPORTE",
-  "INFORME DEL PROGRESO",
-  "DESCARGA PDF",
-  "HISTORIAL",
-  "AJUSTES"
-];
-
-// COORDENADAS DE BOTONES INTERACTIVOS
-// Valores en porcentajes:
-// x = izquierda, y = arriba, w = ancho, h = alto
-// destino = pantalla a la que navegará
-
-const botonesPorPantalla = {
-
-  // 1. INICIO
-  1: [
-    {x: 14, y: 87, w: 72, h: 5, destino: 2, texto: "Crear cuenta"},
-    {x: 36, y: 96, w: 30, h: 4, destino: 4, texto: "Iniciar sesión"}
-  ],
-
-  // 2. CREAR CUENTA
-  2: [
-    {x: 15, y: 74, w: 70, h: 9, destino: 3, texto: "Aceptar términos"},
-    {x: 22, y: 85, w: 56, h: 8, destino: 3, texto: "Continuar"}
-  ],
-
-  // 3. PRIVACIDAD
-  3: [
-    {x: 18, y: 75, w: 65, h: 9, destino: 4, texto: "Aceptar privacidad"},
-    {x: 22, y: 85, w: 56, h: 8, destino: 4, texto: "Continuar"}
-  ],
-
-  // 4. INICIAR SESIÓN
-  4: [
-    {x: 35, y: 64, w: 60, h: 8, destino: 5, texto: "Olvidé mi contraseña"},
-    {x: 18, y: 78, w: 65, h: 9, destino: 9, texto: "Iniciar sesión"}
-  ],
-
-  // 5. RECUPERAR CONTRASEÑA
-  5: [
-    {x: 18, y: 76, w: 65, h: 10, destino: 6, texto: "Enviar código"}
-  ],
-
-  // 6. VALIDACIÓN DE CÓDIGO
-  6: [
-    {x: 18, y: 76, w: 65, h: 10, destino: 7, texto: "Validar código"}
-  ],
-
-  // 7. NUEVA CONTRASEÑA
-  7: [
-    {x: 18, y: 76, w: 65, h: 10, destino: 8, texto: "Guardar contraseña"}
-  ],
-
-  // 8. INICIO DE SESIÓN
-  8: [
-    {x: 18, y: 76, w: 65, h: 10, destino: 9, texto: "Entrar"}
-  ],
-
-  // 9. PERFIL TUTOR
-  9: [
-    {x: 18, y: 76, w: 65, h: 10, destino: 10, texto: "Guardar perfil"}
-  ],
-
-  // 10. PERFIL NIÑO
-  10: [
-    {x: 18, y: 76, w: 65, h: 10, destino: 11, texto: "Continuar"}
-  ],
-
-  // 11. SINCRONIZACIÓN
-  11: [
-    {x: 18, y: 76, w: 65, h: 10, destino: 12, texto: "Sincronizar"}
-  ],
-
-  // 12. CONEXIÓN DE DISPOSITIVOS
-  12: [
-    {x: 12, y: 74, w: 35, h: 10, destino: 11, texto: "Regresar"},
-    {x: 53, y: 74, w: 35, h: 10, destino: 13, texto: "Conectar"}
-  ],
-
-  // 13. PANTALLA PRINCIPAL
-  13: [
-    {x: 17, y: 53, w: 20, h: 12, destino: 14, texto: "Reportes"},
-    {x: 40, y: 53, w: 20, h: 12, destino: 17, texto: "Historial"},
-    {x: 63, y: 53, w: 20, h: 12, destino: 18, texto: "Ajustes"},
-    {x: 17, y: 67, w: 20, h: 12, destino: 14, texto: "Generar reporte"},
-    {x: 40, y: 67, w: 20, h: 12, destino: 17, texto: "Ver actividad"},
-    {x: 63, y: 67, w: 20, h: 12, destino: 18, texto: "Configuración"}
-  ],
-
-  // 14. GENERAR REPORTE
-  14: [
-    {x: 18, y: 76, w: 65, h: 10, destino: 15, texto: "Generar reporte"}
-  ],
-
-  // 15. INFORME DEL PROGRESO
-  15: [
-    {x: 18, y: 76, w: 65, h: 10, destino: 16, texto: "Descargar PDF"}
-  ],
-
-  // 16. DESCARGA PDF
-  16: [
-    {x: 18, y: 76, w: 65, h: 10, destino: 13, texto: "Continuar"}
-  ],
-
-  // 17. HISTORIAL
-  17: [
-    {x: 18, y: 76, w: 65, h: 10, destino: 13, texto: "Continuar"}
-  ],
-
-  // 18. AJUSTES
-  18: [
-    {x: 18, y: 76, w: 65, h: 10, destino: 13, texto: "Guardar y continuar"}
-  ]
-
-};
-
-// FUNCIÓN PARA CAMBIAR DE PANTALLA
-function irA(numero) {
-  if (numero < 1 || numero > 18) return;
-
-  actual = numero;
-
-  const archivo = String(numero).padStart(2, "0");
-
-  document.getElementById("imagen").src =
-    "pantallas/" + archivo + ".png";
-
-  document.getElementById("titulo").textContent =
-    nombres[numero - 1];
-
-  document.getElementById("contador").textContent =
-    "Pantalla " + numero + " de 18";
-
-  document.getElementById("anterior").disabled =
-    numero === 1;
-
-  document.getElementById("siguiente").disabled =
-    numero === 18;
-
-  crearBotones();
-
-  window.scrollTo(0, 0);
-}
-
-// CREAR ZONAS INTERACTIVAS SOBRE LA IMAGEN
-function crearBotones() {
-
-  const contenedor = document.getElementById("botones");
-
-  contenedor.innerHTML = "";
-
-  const botones = botonesPorPantalla[actual] || [];
-
-  botones.forEach(function(datos) {
-
-    const boton = document.createElement("button");
-
-    boton.className = "boton";
-    boton.type = "button";
-
-    boton.style.left = datos.x + "%";
-    boton.style.top = datos.y + "%";
-    boton.style.width = datos.w + "%";
-    boton.style.height = datos.h + "%";
-
-    boton.setAttribute("aria-label", datos.texto);
-    boton.title = datos.texto;
-
-    boton.onclick = function() {
-      irA(datos.destino);
+    const nombres = {
+      1: "INICIO",
+      2: "CREAR CUENTA TUTOR",
+      3: "ACEPTAR TÉRMINOS DE PRIVACIDAD",
+      4: "INICIAR SESIÓN",
+      5: "RECUPERAR CONTRASEÑA",
+      6: "VALIDACIÓN DE CÓDIGO",
+      7: "NUEVA CONTRASEÑA",
+      8: "INICIAR SESIÓN",
+      9: "PERFIL TUTOR",
+      10: "PERFIL NIÑO",
+      11: "SINCRONIZACIÓN",
+      12: "CONEXIÓN DE DISPOSITIVOS",
+      13: "INICIO APLICACIÓN",
+      14: "GENERAR REPORTE",
+      15: "INFORME DEL PROGRESO",
+      16: "DESCARGA PDF",
+      17: "HISTORIAL",
+      18: "AJUSTES"
     };
 
-    contenedor.appendChild(boton);
+    /* 
+      Coordenadas en porcentaje relativas a la imagen completa:
+      x = left
+      y = top
+      w = width
+      h = height
+    */
+    const mapa = {
+      1: [
+        { x: 15, y: 58, w: 70, h: 8, destino: 2 },
+        { x: 33, y: 69, w: 34, h: 6, destino: 4 }
+      ],
 
-  });
+      2: [
+        { x: 20, y: 76, w: 60, h: 5, destino: 3 },
+        { x: 18, y: 86, w: 64, h: 9, destino: 3 }
+      ],
 
-}
+      3: [
+        { x: 18, y: 85, w: 64, h: 9, destino: 4 }
+      ],
 
-// VOLVER A LA PANTALLA ANTERIOR
-function anterior() {
-  irA(actual - 1);
-}
+      4: [
+        { x: 30, y: 61, w: 40, h: 4, destino: 5 },
+        { x: 18, y: 79, w: 64, h: 9, destino: 9 }
+      ],
 
-// IR A LA PANTALLA SIGUIENTE
-function siguiente() {
-  irA(actual + 1);
-}
+      5: [
+        { x: 18, y: 79, w: 64, h: 9, destino: 6 }
+      ],
 
-// NAVEGACIÓN CON TECLADO
-document.addEventListener("keydown", function(evento) {
+      6: [
+        { x: 18, y: 79, w: 64, h: 9, destino: 7 }
+      ],
 
-  if (evento.key === "ArrowRight") {
-    siguiente();
-  }
+      7: [
+        { x: 18, y: 79, w: 64, h: 9, destino: 8 }
+      ],
 
-  if (evento.key === "ArrowLeft") {
-    anterior();
-  }
+      8: [
+        { x: 18, y: 79, w: 64, h: 9, destino: 9 }
+      ],
 
-});
+      9: [
+        { x: 18, y: 79, w: 64, h: 9, destino: 10 }
+      ],
 
-// INICIAR PROTOTIPO
-irA(1);
+      10: [
+        { x: 18, y: 79, w: 64, h: 9, destino: 11 }
+      ],
 
-</script>
+      11: [
+        { x: 18, y: 79, w: 64, h: 9, destino: 12 }
+      ],
 
+      12: [
+        { x: 14, y: 78, w: 30, h: 8, destino: 11 },
+        { x: 56, y: 78, w: 30, h: 8, destino: 13 }
+      ],
+
+      13: [
+        { x: 21, y: 56, w: 14, h: 9, destino: 14 },
+        { x: 42, y: 56, w: 14, h: 9, destino: 17 },
+        { x: 63, y: 56, w: 14, h: 9, destino: 18 },
+
+        { x: 21, y: 67, w: 14, h: 9, destino: 14 },
+        { x: 42, y: 67, w: 14, h: 9, destino: 17 },
+        { x: 63, y: 67, w: 14, h: 9, destino: 18 },
+
+        { x: 18, y: 82, w: 64, h: 8, destino: 14 }
+      ],
+
+      14: [
+        { x: 18, y: 79, w: 64, h: 9, destino: 15 }
+      ],
+
+      15: [
+        { x: 18, y: 79, w: 64, h: 9, destino: 16 }
+      ],
+
+      16: [
+        { x: 18, y: 79, w: 64, h: 9, destino: 13 }
+      ],
+
+      17: [
+        { x: 18, y: 79, w: 64, h: 9, destino: 13 }
+      ],
+
+      18: [
+        { x: 18, y: 79, w: 64, h: 9, destino: 13 }
+      ]
+    };
+
+    function irA(numero, guardarHistorial = true) {
+      if (numero < 1 || numero > 18) return;
+
+      if (guardarHistorial && actual !== numero) {
+        historial.push(actual);
+      }
+
+      actual = numero;
+
+      const archivo = String(numero).padStart(2, "0");
+      document.getElementById("imagen").src = "pantallas/" + archivo + ".png";
+      document.getElementById("tituloInterno").textContent = nombres[numero];
+
+      const btnBack = document.getElementById("btnBack");
+      if (historial.length > 0) {
+        btnBack.classList.remove("oculto");
+      } else {
+        btnBack.classList.add("oculto");
+      }
+
+      crearHotspots();
+    }
+
+    function retroceder() {
+      if (historial.length === 0) return;
+      const anterior = historial.pop();
+      irA(anterior, false);
+    }
+
+    function crearHotspots() {
+      const overlay = document.getElementById("overlay");
+      overlay.innerHTML = "";
+
+      const botones = mapa[actual] || [];
+
+      botones.forEach((zona) => {
+        const b = document.createElement("button");
+        b.className = "hotspot";
+        b.style.left = zona.x + "%";
+        b.style.top = zona.y + "%";
+        b.style.width = zona.w + "%";
+        b.style.height = zona.h + "%";
+        b.onclick = () => irA(zona.destino, true);
+        overlay.appendChild(b);
+      });
+    }
+
+    irA(1, false);
+  </script>
 </body>
 </html>

@@ -1,75 +1,506 @@
+
 <!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>JETZACUBE · Wireframes navegables</title>
+
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#e9e9e9;font-family:Arial,Helvetica,sans-serif}
-main{width:100%;height:100%;height:100dvh;display:grid;place-items:center;overflow:hidden}
-/* Marco e imagen conservan SIEMPRE la misma proporción: 488 × 994 */
-#phone{position:relative;width:min(100vw,calc(100dvh * 488 / 994));aspect-ratio:488/994;flex:none;overflow:hidden;background:white}
-#screen{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;user-select:none}
-#touch{position:absolute;inset:0;z-index:2;pointer-events:none}
-.zone{position:absolute;display:block;border:0;padding:0;margin:0;background:transparent;cursor:pointer;pointer-events:auto;touch-action:manipulation;border-radius:12px}
-.zone:focus-visible{outline:3px solid #187fda;background:#187fda22}
-#heading{position:absolute;top:10%;left:22%;width:65%;min-height:4%;z-index:3;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:clamp(11px,3.6vw,17px);line-height:1.15;text-align:center;color:#111;pointer-events:none;background:#fff;border-radius:14px;padding:3px}
-#back{position:absolute;left:10%;top:10%;width:10%;aspect-ratio:1;z-index:4;border:1px solid #ddd;background:white;border-radius:100%;box-shadow:0 2px 6px #0002;font-weight:700;font-size:clamp(18px,5vw,25px);cursor:pointer;display:grid;place-items:center;touch-action:manipulation}
-#back[hidden]{display:none}
-/* Agrega ?debug=1 a la URL para ver las zonas sin alterar su posición */
-.debug .zone{background:rgba(255,40,60,.25);outline:1px solid #e23}
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #e9e9e9;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* Imagen y botones comparten las mismas coordenadas */
+#phone {
+  position: relative;
+  width: min(100vw, calc(100dvh * 488 / 994));
+  aspect-ratio: 488 / 994;
+  flex: none;
+  overflow: hidden;
+  background: white;
+}
+
+#screen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+#touch {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  display: block;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* Botones invisibles normalmente */
+.zone {
+  fill: transparent;
+  cursor: pointer;
+  pointer-events: all;
+  touch-action: manipulation;
+}
+
+.zone:focus-visible {
+  stroke: #187fda;
+  stroke-width: 3;
+  fill: #187fda22;
+}
+
+/* Detecta los toques en espacios vacíos */
+.blank {
+  fill: transparent;
+  pointer-events: all;
+  cursor: default;
+}
+
+/* Iluminación azul de los botones */
+.hints .zone {
+  fill: rgba(24, 127, 218, 0.24);
+  stroke: #0877dc;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 5px rgba(0, 105, 255, 0.55));
+}
+
+.hints .zone:active {
+  fill: rgba(24, 127, 218, 0.45);
+}
+
+/* Título dentro de la pantalla */
+#heading {
+  position: absolute;
+  top: 10%;
+  left: 22%;
+  width: 65%;
+  min-height: 4%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: clamp(11px, 3.6vw, 17px);
+  line-height: 1.15;
+  text-align: center;
+  color: #111;
+  pointer-events: none;
+  background: #fff;
+  border-radius: 14px;
+  padding: 3px;
+}
+
+/* Botón de regresar */
+#back {
+  position: absolute;
+  left: 10%;
+  top: 10%;
+  width: 10%;
+  aspect-ratio: 1;
+  z-index: 4;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 100%;
+  box-shadow: 0 2px 6px #0002;
+  font-weight: 700;
+  font-size: clamp(18px, 5vw, 25px);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  touch-action: manipulation;
+}
+
+#back[hidden] {
+  display: none;
+}
+
+/* Modo de prueba */
+.debug .zone {
+  fill: rgba(255, 40, 60, 0.25);
+  stroke: #e23;
+  stroke-width: 2;
+}
 </style>
 </head>
+
 <body>
-<main><div id="phone">
-<img id="screen" src="pantallas/01.png" alt="Wireframe de inicio" width="488" height="994">
-<div id="touch"></div>
-<h1 id="heading">INICIO</h1>
-<button id="back" aria-label="Regresar a la pantalla anterior" hidden>←</button>
-</div></main>
+
+<main>
+  <div id="phone">
+
+    <img
+      id="screen"
+      src="pantallas/01.png"
+      alt="Wireframe de inicio"
+      width="488"
+      height="994"
+    >
+
+    <svg
+      id="touch"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 488 994"
+      preserveAspectRatio="none"
+      aria-label="Zonas interactivas">
+    </svg>
+
+    <h1 id="heading">INICIO</h1>
+
+    <button
+      id="back"
+      aria-label="Regresar a la pantalla anterior"
+      hidden>
+      ←
+    </button>
+
+  </div>
+</main>
+
 <script>
 'use strict';
-const W=488,H=994;
-const titles=['INICIO','CREAR CUENTA TUTOR','ACEPTAR TÉRMINOS DE PRIVACIDAD','INICIAR SESIÓN','RECUPERAR CONTRASEÑA','VALIDACIÓN DE CÓDIGO','NUEVA CONTRASEÑA','INICIAR SESIÓN','PERFIL TUTOR','PERFIL NIÑO','SINCRONIZACIÓN','CONEXIÓN DE DISPOSITIVOS','INICIO APLICACIÓN','GENERAR REPORTE','INFORME DEL PROGRESO','DESCARGA PDF','HISTORIAL','AJUSTES'];
-// Zonas medidas en PÍXELES sobre las imágenes 488x994 originales.
-// [x,y,ancho,alto,pantalla destino,descripción]. El contenedor escala la imagen y cada zona juntos.
-const zones={
- 1:[[60,467,369,58,2,'Crear cuenta'],[174,625,147,43,4,'Iniciar sesión']],
- 2:[[108,605,335,52,3,'Aviso de privacidad'],[68,730,369,81,3,'Continuar registro']],
- 3:[[65,740,375,81,4,'Aceptar y continuar']],
- 4:[[172,519,275,49,5,'Olvidaste tu contraseña'],[74,740,370,82,9,'Iniciar sesión']],
- 5:[[72,726,374,81,6,'Enviar código']],
- 6:[[76,757,367,81,7,'Validar código']],
- 7:[[69,762,375,82,8,'Guardar contraseña']],
- 8:[[73,742,372,82,9,'Iniciar sesión']],
- 9:[[68,761,376,81,10,'Continuar perfil tutor']],
- 10:[[68,761,376,81,11,'Continuar perfil niño']],
- 11:[[129,745,231,70,12,'Sincronizar']],
- 12:[[73,755,150,70,11,'Regresar a sincronización'],[267,755,152,70,13,'Conectar dispositivo']],
- 13:[[90,560,88,94,14,'Primer módulo'],[199,560,88,94,17,'Segundo módulo'],[310,560,88,94,18,'Tercer módulo'],[90,677,88,93,14,'Cuarto módulo'],[199,677,88,93,17,'Quinto módulo'],[310,677,88,93,18,'Sexto módulo'],[136,831,222,69,14,'Ver reportes']],
- 14:[[75,804,373,81,15,'Generar reporte']],
- 15:[[74,784,375,82,16,'Descargar informe']],
- 16:[[132,408,226,56,13,'PDF'],[74,636,375,82,13,'Continuar']],
- 17:[[66,265,170,50,14,'Historial de hoy'],[66,333,170,49,14,'Historial de ayer'],[66,402,184,59,14,'Semana pasada'],[76,660,373,81,13,'Continuar']],
- 18:[[105,269,245,45,18,'Intensidad de la luz'],[105,337,245,45,18,'Volumen'],[75,688,373,82,13,'Guardar y continuar']]
+
+// Dimensiones originales de los wireframes
+const W = 488;
+const H = 994;
+
+// Títulos de las pantallas
+const titles = [
+  'INICIO',
+  'CREAR CUENTA TUTOR',
+  'ACEPTAR TÉRMINOS DE PRIVACIDAD',
+  'INICIAR SESIÓN',
+  'RECUPERAR CONTRASEÑA',
+  'VALIDACIÓN DE CÓDIGO',
+  'NUEVA CONTRASEÑA',
+  'INICIAR SESIÓN',
+  'PERFIL TUTOR',
+  'PERFIL NIÑO',
+  'SINCRONIZACIÓN',
+  'CONEXIÓN DE DISPOSITIVOS',
+  'INICIO APLICACIÓN',
+  'GENERAR REPORTE',
+  'INFORME DEL PROGRESO',
+  'DESCARGA PDF',
+  'HISTORIAL',
+  'AJUSTES'
+];
+
+/*
+ COORDENADAS DE LOS BOTONES
+
+ Cada botón contiene:
+ x = posición horizontal
+ y = posición vertical
+ ancho
+ alto
+ pantalla de destino
+ descripción
+
+ Las coordenadas están basadas en
+ imágenes de 488 × 994 píxeles.
+*/
+
+const zones = {
+
+  // PANTALLA 1 - INICIO
+  1: [
+    [60,467,369,58,2,'Crear cuenta'],
+    [174,625,147,43,4,'Iniciar sesión']
+  ],
+
+  // PANTALLA 2 - CREAR CUENTA
+  2: [
+    [108,605,335,52,3,'Aviso de privacidad'],
+    [68,730,369,81,3,'Continuar registro']
+  ],
+
+  // PANTALLA 3 - PRIVACIDAD
+  3: [
+    [65,740,375,81,4,'Aceptar y continuar']
+  ],
+
+  // PANTALLA 4 - INICIAR SESIÓN
+  4: [
+    [169,526,281,32,5,'Olvidaste tu contraseña'],
+    [74,741,370,79,9,'Iniciar sesión']
+  ],
+
+  // PANTALLA 5 - RECUPERAR CONTRASEÑA
+  5: [
+    [72,726,374,81,6,'Enviar código']
+  ],
+
+  // PANTALLA 6 - VALIDACIÓN
+  6: [
+    [76,757,367,81,7,'Validar código']
+  ],
+
+  // PANTALLA 7 - NUEVA CONTRASEÑA
+  7: [
+    [69,762,375,82,8,'Guardar contraseña']
+  ],
+
+  // PANTALLA 8 - INICIAR SESIÓN
+  8: [
+    [73,742,372,82,9,'Iniciar sesión']
+  ],
+
+  // PANTALLA 9 - PERFIL TUTOR
+  9: [
+    [68,761,376,81,10,'Continuar perfil tutor']
+  ],
+
+  // PANTALLA 10 - PERFIL NIÑO
+  10: [
+    [68,761,376,81,11,'Continuar perfil niño']
+  ],
+
+  // PANTALLA 11 - SINCRONIZACIÓN
+  11: [
+    [129,745,231,70,12,'Sincronizar']
+  ],
+
+  // PANTALLA 12 - CONEXIÓN
+  12: [
+    [73,755,150,70,11,'Regresar a sincronización'],
+    [267,755,152,70,13,'Conectar dispositivo']
+  ],
+
+  // PANTALLA 13 - INICIO DE LA APP
+  13: [
+    [90,560,88,94,14,'Primer módulo'],
+    [199,560,88,94,17,'Segundo módulo'],
+    [310,560,88,94,18,'Tercer módulo'],
+    [90,677,88,93,14,'Cuarto módulo'],
+    [199,677,88,93,17,'Quinto módulo'],
+    [310,677,88,93,18,'Sexto módulo'],
+    [136,831,222,69,14,'Ver reportes']
+  ],
+
+  // PANTALLA 14 - GENERAR REPORTE
+  14: [
+    [75,804,373,81,15,'Generar reporte']
+  ],
+
+  // PANTALLA 15 - INFORME
+  15: [
+    [74,784,375,82,16,'Descargar informe']
+  ],
+
+  // PANTALLA 16 - PDF
+  16: [
+    [132,408,226,56,13,'PDF'],
+    [74,636,375,82,13,'Continuar']
+  ],
+
+  // PANTALLA 17 - HISTORIAL
+  17: [
+    [66,265,170,50,14,'Historial de hoy'],
+    [66,333,170,49,14,'Historial de ayer'],
+    [66,402,184,59,14,'Semana pasada'],
+    [76,660,373,81,13,'Continuar']
+  ],
+
+  // PANTALLA 18 - AJUSTES
+  18: [
+    [105,269,245,45,18,'Intensidad de la luz'],
+    [105,337,245,45,18,'Volumen'],
+    [75,688,373,82,13,'Guardar y continuar']
+  ]
 };
-let current=1;const stack=[];
-const img=document.getElementById('screen'),touch=document.getElementById('touch'),heading=document.getElementById('heading'),back=document.getElementById('back');
-if(new URLSearchParams(location.search).has('debug'))document.body.classList.add('debug');
-function go(n,save=true){
- if(!Number.isInteger(n)||n<1||n>18)return;
- if(save&&n!==current)stack.push(current);
- current=n;img.src=`pantallas/${String(n).padStart(2,'0')}.png`;
- img.alt=titles[n-1];heading.textContent=titles[n-1];back.hidden=stack.length===0;
- touch.replaceChildren();
- (zones[n]||[]).forEach(([x,y,w,h,to,label])=>{
-   const b=document.createElement('button');b.type='button';b.className='zone';b.setAttribute('aria-label',label);
-   Object.assign(b.style,{left:(x/W*100)+'%',top:(y/H*100)+'%',width:(w/W*100)+'%',height:(h/H*100)+'%'});
-   b.addEventListener('click',()=>go(to));touch.appendChild(b);
- });
+
+// Pantalla actual
+let current = 1;
+
+// Historial de navegación
+const stack = [];
+
+// Temporizador de iluminación
+let hintTimer = null;
+
+// OCULTAR BOTONES AZULES
+function hideHints() {
+  clearTimeout(hintTimer);
+  document.body.classList.remove("hints");
 }
-back.addEventListener('click',()=>{if(!stack.length)return;const prev=stack.pop();go(prev,false)});
-go(1,false);
+
+// MOSTRAR BOTONES AZULES
+function showHints() {
+
+  hideHints();
+
+  document.body.classList.add("hints");
+
+  // Se apagan después de 2.6 segundos
+  hintTimer = setTimeout(hideHints, 2600);
+}
+
+// Elementos HTML
+const img = document.getElementById('screen');
+const touch = document.getElementById('touch');
+const heading = document.getElementById('heading');
+const back = document.getElementById('back');
+
+// Modo de prueba con ?debug=1
+if (new URLSearchParams(location.search).has('debug')) {
+  document.body.classList.add('debug');
+}
+
+// CAMBIAR DE PANTALLA
+function go(n, save = true) {
+
+  if (!Number.isInteger(n) || n < 1 || n > 18) {
+    return;
+  }
+
+  if (save && n !== current) {
+    stack.push(current);
+  }
+
+  hideHints();
+
+  current = n;
+
+  // Cambiar imagen
+  img.src = `pantallas/${String(n).padStart(2,'0')}.png`;
+
+  // Cambiar título
+  img.alt = titles[n - 1];
+  heading.textContent = titles[n - 1];
+
+  // Mostrar u ocultar regreso
+  back.hidden = stack.length === 0;
+
+  // Borrar zonas anteriores
+  touch.replaceChildren();
+
+  /*
+    FONDO INTERACTIVO
+
+    Cuando se toca un espacio en blanco,
+    aparecen las zonas azules.
+  */
+
+  const blank = document.createElementNS(
+    'http://www.w3.org/2000/svg',
+    'rect'
+  );
+
+  blank.setAttribute('x', '0');
+  blank.setAttribute('y', '0');
+  blank.setAttribute('width', W);
+  blank.setAttribute('height', H);
+  blank.setAttribute('class', 'blank');
+  blank.setAttribute(
+    'aria-label',
+    'Mostrar botones disponibles'
+  );
+
+  blank.addEventListener('click', showHints);
+
+  touch.appendChild(blank);
+
+  /*
+    CREAR BOTONES INTERACTIVOS
+
+    Cada rectángulo invisible coincide
+    con una zona del wireframe.
+  */
+
+  (zones[n] || []).forEach(
+    ([x, y, w, h, to, label]) => {
+
+      const rect = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'rect'
+      );
+
+      rect.setAttribute('x', x);
+      rect.setAttribute('y', y);
+      rect.setAttribute('width', w);
+      rect.setAttribute('height', h);
+      rect.setAttribute('rx', '7');
+      rect.setAttribute('class', 'zone');
+      rect.setAttribute('role', 'button');
+      rect.setAttribute('tabindex', '0');
+      rect.setAttribute('aria-label', label);
+
+      // Navegar al tocar
+      rect.addEventListener('click', () => {
+        go(to);
+      });
+
+      // Navegar con teclado
+      rect.addEventListener('keydown', event => {
+
+        if (
+          event.key === 'Enter' ||
+          event.key === ' '
+        ) {
+
+          event.preventDefault();
+          go(to);
+
+        }
+      });
+
+      touch.appendChild(rect);
+    }
+  );
+}
+
+// Iluminar también al tocar fuera del teléfono
+document.querySelector('main').addEventListener(
+  'click',
+  e => {
+    if (e.target === e.currentTarget) {
+      showHints();
+    }
+  }
+);
+
+// BOTÓN DE REGRESO
+back.addEventListener('click', () => {
+
+  if (!stack.length) {
+    return;
+  }
+
+  const prev = stack.pop();
+
+  go(prev, false);
+});
+
+// CARGAR PANTALLA INICIAL
+go(1, false);
+
 </script>
-</body></html>
+
+</body>
+</html>
